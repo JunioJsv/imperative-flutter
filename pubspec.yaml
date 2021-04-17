@@ -1,5 +1,5 @@
 name: imperative_flutter
-description: A new Flutter package project.
+description: Manage the state of your widgets using simple id.
 version: 0.0.1
 repository: https://github.com/JunioJsv/imperative-flutter
 

@@ -1,14 +1,64 @@
-# imperative_flutter
+# Imperative Flutter
 
-A new Flutter package project.
+Manage the state of your widgets using simple id.
 
-## Getting Started
+## Usage
+**ImperativeProvider** is responsible for storing and handling the references for **ImperativeBuilder**, it can be _global scope_ when **MaterialApp** is his child or _local scope_ when **Scaffold** is your child.
+```dart
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ImperativeProvider(
+      child: MaterialApp(
+        title: 'Imperative Flutter Demo',
+        home: MyHomePage(),
+      ),
+    );
+  }
+}
+```
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+**ImperativeBuilder** is responsible for store the state of our widget and reconstructing it when that state is changed, note that the id must be unique for each ImperativeProvider Scope.
+```dart
+// Inside StatelessWidget
+
+ImperativeBuilder<int>(
+    id: 'count',
+    initialData: 0,
+    // the builder method will be called every time the state changes, updating only the widget within the scope.
+    builder: (context, snapshot) {
+        return Container(
+            height: 48,
+            width: 48,
+            color: Colors.pink,
+            child: Center(
+                child: Text(
+                    '${snapshot.data}',
+                    style: TextStyle(color: Colors.white),
+                  ),
+            ),
+        );
+    },
+),
+
+// ...
+
+class Whatever extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // Get instance of ImperativeProvider
+    final imperative = ImperativeProvider.of(context);
+
+    return ElevatedButton.icon(
+            onPressed: () {
+                // Get current state of ImperativeBuilder where id equal 'count'
+                final value = imperative.getState<int>('count');
+                // Set state of ImperativeBuilder where id equal 'count' and rebuild
+                imperative.setState('count', value + 1);
+            },
+            icon: Icon(Icons.add),
+            label: Text('plus'),
+    ),
+  }
+```
