@@ -26,7 +26,8 @@ class MyApp extends StatelessWidget {
 ImperativeBuilder<int>(
     id: 'count',
     initialData: 0,
-    // the builder method will be called every time the state changes, updating only the widget within the scope.
+    /* the builder method will be called every time the state changes,
+    updating only the widget within the scope */
     builder: (context, snapshot) {
         return Container(
             height: 48,
