@@ -1,6 +1,6 @@
 # Imperative Flutter
 
-Manage the state of your widgets using simple id.
+Manage the state of your widgets using imperative programming concepts.
 
 ## Usage
 **ImperativeProvider** is responsible for storing and handling the references for **ImperativeBuilder**, it can be _global scope_ when **MaterialApp** is his child or _local scope_ when **Scaffold** is your child.

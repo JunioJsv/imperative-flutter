@@ -1,26 +1,42 @@
+/// Manage the state of your widgets using imperative programming concepts.
 library imperative_flutter;
 
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
+/// Interface to display only in the necessary methods of [ImperativeProvider]
 abstract class ImperativeProviderI {
+  /// Updade state of ImperativeBuilder registred in [ImperativeProvider].
+  ///
+  /// The [id] must be registred in [ImperativeProvider] scope.
   void setState<T>(String id, T state);
+
+  /// Get current state of ImperativeBuilder using [id].
+  ///
+  /// The [id] must be registred in [ImperativeProvider] scope.
   T getState<T>(String id);
 }
 
+/// [ImperativeProvider] is responsible for storing and handling the
+/// references for [ImperativeBuilder], it can be global scope when
+/// [MaterialApp] is his child or local scope when [Scaffold] is your child.
 class ImperativeProvider extends InheritedWidget
     implements ImperativeProviderI {
+  /// [child] is inside in scope of [ImperativeProvider]
   ImperativeProvider({Key key, @required Widget child})
       : super(key: key, child: child);
 
+  /// Map to store state of [ImperativeBuilder]
   final Map<String, BehaviorSubject> _builders = {};
 
+  /// Register a [ImperativeBuilder] with [id] in [_builders] of [ImperativeProvider]
   void _registerBuilder(String id, BehaviorSubject controller) {
     assert(!_builders.containsKey(id),
         'the id $id has already been registered by a ImperativeBuilder');
     _builders.addAll({id: controller});
   }
 
+  /// Remove [ImperativeBuilder] with [id] of [_builders]
   void _unregisterBuilder(String id) {
     assert(!_builders.containsKey(id),
         'the id $id was not registered by any ImperativeBuilder');
@@ -40,6 +56,7 @@ class ImperativeProvider extends InheritedWidget
     return value;
   }
 
+  /// Get state of ImperativeBuilder if [id] has registred in [_builders]
   BehaviorSubject _getBuilderController(String id) {
     assert(_builders.containsKey(id),
         'the id $id was not registered by any ImperativeBuilder');
@@ -51,15 +68,20 @@ class ImperativeProvider extends InheritedWidget
     return false;
   }
 
+  /// Get instace of [ImperativeProviderI] in scope of [context]
   static ImperativeProviderI of(BuildContext context) => context
       .getElementForInheritedWidgetOfExactType<ImperativeProvider>()
       .widget as ImperativeProviderI;
 
+  /// Get instace of [ImperativeProvider] in scope of [context]
   static ImperativeProvider _of(BuildContext context) => context
       .getElementForInheritedWidgetOfExactType<ImperativeProvider>()
       .widget;
 }
 
+/// [ImperativeBuilder] is responsible for store the state of our widget and
+/// reconstructing it when that state is changed, note that the id must be
+/// unique for each [ImperativeProvider] Scope.
 class ImperativeBuilder<T> extends StatefulWidget {
   final T initialData;
   final String id;
@@ -84,6 +106,7 @@ class _ImperativeBuilderState<T> extends State<ImperativeBuilder> {
     super.initState();
   }
 
+  /// Responsible to store dispose function
   void Function(String id) _disposeBuilder;
 
   @override

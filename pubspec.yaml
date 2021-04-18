@@ -1,6 +1,6 @@
 name: imperative_flutter
-description: Manage the state of your widgets using simple id.
-version: 0.0.1
+description: Manage the state of your widgets using imperative programming concepts.
+version: 0.0.2
 repository: https://github.com/JunioJsv/imperative-flutter
 
 environment:
