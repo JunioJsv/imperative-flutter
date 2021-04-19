@@ -2,6 +2,16 @@
 
 Manage the state of your widgets using imperative programming concepts.
 
+## Setup
+Intall imperative_flutter package in pubspec.yaml
+```yaml
+dependencies:
+  imperative_flutter: ^0.0.2
+```
+Then it's just import in your code
+```dart
+import 'package:imperative_flutter/imperative_flutter.dart';
+```
 ## Usage
 **ImperativeProvider** is responsible for storing and handling the references for **ImperativeBuilder**, it can be _global scope_ when **MaterialApp** is his child or _local scope_ when **Scaffold** is your child.
 ```dart
